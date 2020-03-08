@@ -98,6 +98,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(latlng(location)).title(title));
     }
 
+    public void addMarker(Address address, String title, String snippet){
+        mMap.addMarker(new MarkerOptions().position(latlng(address)).title(title).snippet(snippet));
+    }
+
+    public void addMarker(Location location, String title, String snippet){
+        mMap.addMarker(new MarkerOptions().position(latlng(location)).title(title).snippet(snippet));
+    }
+
+    public void clear(){
+        mMap.clear();
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         gps.onLocationChanged(location);
