@@ -7,6 +7,7 @@ package com.interview.navigation;
  * Google's maps and provides an interactive map for the user to view
  * the relative location of the recommendation.
  */
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;

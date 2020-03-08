@@ -41,7 +41,7 @@ public class SleepTimer {
         }
         else if (o instanceof Pair){
             Pair<Object, Intent> pair = (Pair)o;
-            final Object activity = pair.first;
+            final AppCompatActivity activity = (AppCompatActivity) pair.first;
             final Intent intent = pair.second;
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -52,19 +52,8 @@ public class SleepTimer {
         }
     }
 
-    private static void startActivity(Object o, Intent intent) {
-        if (o instanceof MainActivity)
-            ((MainActivity) o).startActivity(intent);
-        if (o instanceof SignInActivity)
-            ((SignInActivity) o).startActivity(intent);
-        else if (o instanceof RecyclerViewActivity)
-            ((RecyclerViewActivity) o).startActivity(intent);
-        else if (o instanceof MapsActivity)
-            ((MapsActivity) o).startActivity(intent);
-        else if (o instanceof SwipingActivity)
-            ((SwipingActivity) o).startActivity(intent);
-        else
-            System.err.println("Class not found when switching from Activity");
+    private static void startActivity(AppCompatActivity app, Intent intent) {
+        app.startActivity(intent);
     }
 
     public static void delay(final int seconds, final TextView text){
@@ -104,35 +93,6 @@ public class SleepTimer {
                 @Override
                 public void run() {
                     number.set(counter);
-                }
-            }, timer);
-        }
-    }
-
-    public static void delay(final int seconds, final SignInActivity login, final RecyclerViewActivity list){
-        int timer = 0;
-        for (int i = seconds; i >= 0; i--){
-            timer += 1000;
-            final int counter = i;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(login, RecyclerViewActivity.class);
-                    login.startActivity(intent);
-                }
-            }, timer);
-        }
-    }
-
-    public static void delay(final int seconds, final AtomicLong atomicLong){
-        int timer = 0;
-        for (int i = seconds; i >= 0; i--){
-            timer += 1000;
-            final int counter = i;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    atomicLong.set(counter);
                 }
             }, timer);
         }

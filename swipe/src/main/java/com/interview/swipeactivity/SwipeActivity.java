@@ -1,19 +1,42 @@
 package com.interview.swipeactivity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.interview.androidlib.GPS;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
-public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapterView.onFlingListener, SwipeFlingAdapterView.OnItemClickListener {
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapterView.onFlingListener,
+        SwipeFlingAdapterView.OnItemClickListener, LocationListener {
+    private TextView textView_question;
+    private TextView textView_itemDescription;
+    private TextView textView_itemName;
+    private GPS gps;
 
     //private ArrayList<RowItem> imageContents;
     private ArrayAdapter<String> arrayAdapterImg;
@@ -27,7 +50,13 @@ public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe);
 
-        /////////////////////////////////////////////////////////
+        textView_question = (TextView) findViewById(R.id.textView_question);
+        textView_itemDescription = (TextView) findViewById(R.id.textView_itemDescription);
+        textView_itemName = (TextView) findViewById(R.id.textView_itemName);
+
+        gps = new GPS(this);
+
+        /////////////////////
 
         //imageContents = new ArrayList<>();
         //imageContents.add(new RowItem(R.drawable.ic_training_image_background, "FastFood", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/1200px-McDonald%27s_Golden_Arches.svg.png"));
@@ -37,7 +66,7 @@ public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapte
         //imageContents.add(new RowItem(R.drawable.ic_training_image_background, "Seafood","https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/1200px-McDonald%27s_Golden_Arches.svg.png"));
         //imageContents.add(new RowItem(R.drawable.ic_training_image_background, "Breakfast", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/1200px-McDonald%27s_Golden_Arches.svg.png"));
 
-        //////////////////////////////////////////////////////
+        /////////////////////
 
         arrayAdapterImg = new ArrayAdapter<>(this, R.layout.item_card, R.id.textView_card, str);
 
@@ -85,8 +114,8 @@ public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapte
     @Override
     public void onItemClicked(int i, Object o) {
         //TODO: Do you need to change the image when clicked/tapped?
+        textView_itemDescription.setText(gps.getLastKnownAddress().toString());
     }
-
 
     public void onClick_Dislike(View view){
         flingContainer.getTopCardListener().selectLeft();
@@ -99,6 +128,38 @@ public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapte
     public void onClick_Info(View view){
         String message = "Swipe image left to like, swipe right to dislike";
         Toast.makeText(SwipeActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        gps.onLocationChanged(location);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gps.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gps.onResume();
     }
 }
 

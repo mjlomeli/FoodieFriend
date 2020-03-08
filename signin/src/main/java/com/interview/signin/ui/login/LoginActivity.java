@@ -1,16 +1,13 @@
 package com.interview.signin.ui.login;
-
+import com.interview.signin.R;
 import android.app.Activity;
-
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import android.graphics.Typeface;
+import android.location.Address;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -23,8 +20,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.interview.signin.R;
 
 public class LoginActivity extends AppCompatActivity {
 
