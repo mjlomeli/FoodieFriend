@@ -1,18 +1,8 @@
 package com.interview.swipeactivity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,14 +12,8 @@ import android.widget.Toast;
 
 import com.interview.androidlib.GPS;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
-
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapterView.onFlingListener,
         SwipeFlingAdapterView.OnItemClickListener, LocationListener {

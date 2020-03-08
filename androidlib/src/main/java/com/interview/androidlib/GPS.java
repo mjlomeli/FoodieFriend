@@ -1,9 +1,8 @@
 package com.interview.androidlib;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Context;
@@ -13,7 +12,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -34,6 +32,7 @@ public class GPS {
     private Location location;
     private Address address;
     private AppCompatActivity app;
+    private FragmentActivity frag;
 
     public GPS(AppCompatActivity app){
         if (app instanceof LocationListener) {
@@ -42,7 +41,19 @@ public class GPS {
             locationManager = (LocationManager) app.getSystemService(Context.LOCATION_SERVICE);
             location = null;
             address = null;
+            frag = null;
+            startGPSTracking();
+        }
+    }
 
+    public GPS(FragmentActivity frag){
+        if (frag instanceof LocationListener) {
+            this.frag = frag;
+            locationListener = (LocationListener) frag;
+            locationManager = (LocationManager) frag.getSystemService(Context.LOCATION_SERVICE);
+            location = null;
+            address = null;
+            app = null;
             startGPSTracking();
         }
     }
@@ -55,31 +66,55 @@ public class GPS {
     }
 
     public void onPause() {
-        if (ContextCompat.checkSelfPermission(app,
+        if (app != null && (ContextCompat.checkSelfPermission(app,
                 Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED)) {
+            startGPSTracking();
+        }
+        else if (frag != null && (ContextCompat.checkSelfPermission(frag,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)) {
             startGPSTracking();
         }
     }
 
     public void onResume() {
-        if (ContextCompat.checkSelfPermission(app,
+        if (app != null && (ContextCompat.checkSelfPermission(app,
                 Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED)) {
             stopGPSTracking();
         }
+        if (frag != null && (ContextCompat.checkSelfPermission(frag,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)){
+            stopGPSTracking();
+        }
+
     }
 
     public void startGPSTracking(){
         // Check if the GPS permission is available
-        if (app.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        else {
-            if (app.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) || app.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION))
-                Toast.makeText(app, "GPS permission is needed to view the map.", Toast.LENGTH_SHORT).show();
+        if (app != null) {
+            if (app.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            else {
+                if (app.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) || app.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION))
+                    Toast.makeText(app, "GPS permission is needed to view the map.", Toast.LENGTH_SHORT).show();
 
-            //Request the user for permission to get access to the GPS
-            app.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION_REQUEST);
+                //Request the user for permission to get access to the GPS
+                app.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION_REQUEST);
+            }
+        }
+        if (frag != null) {
+            if (frag.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            else {
+                if (frag.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) || frag.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION))
+                    Toast.makeText(frag, "GPS permission is needed to view the map.", Toast.LENGTH_SHORT).show();
+
+                //Request the user for permission to get access to the GPS
+                frag.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION_REQUEST);
+            }
         }
     }
 
@@ -89,9 +124,13 @@ public class GPS {
 
     public void onLocationChanged(Location location) {
         this.location = location;
-        Geocoder geo = new Geocoder(app.getBaseContext(), Locale.getDefault());
+        Geocoder geo = null;
+        if (app != null)
+            geo = new Geocoder(app.getBaseContext(), Locale.getDefault());
+        if (frag != null)
+            geo = new Geocoder(frag.getBaseContext(), Locale.getDefault());
         try{
-            address = geo.getFromLocation(location.getLatitude(), location.getLongitude(), 1).get(0);
+            this.address = geo.getFromLocation(location.getLatitude(), location.getLongitude(), 1).get(0);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -99,35 +138,16 @@ public class GPS {
             locationManager.removeUpdates(locationListener);
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode) {
-            case CAMERA_PERMISSION_REQUEST:
-                break;
-            case CONTACTS_PERMISSION_REQUEST:
-                break;
-            case FINE_LOCATION_PERMISSION_REQUEST:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    startGPSTracking();
-                else
-                    Toast.makeText(app, "Fine location GPS permission was not granted.", Toast.LENGTH_SHORT).show();
-                break;
-            case COARSE_LOCATION_PERMISSION_REQUEST:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    startGPSTracking();
-                else
-                    Toast.makeText(app, "Coarse location GPS permission was not granted.", Toast.LENGTH_SHORT).show();
-                break;
-            case EXTERNAL_STORAGE_PERMISSION_REQUEST:
-                break;
-            case INTERNAL_STORAGE_PERMISSION_REQUEST:
-                break;
-            case INTERNET_PERMISSION_REQUEST:
-                break;
-            case WIFI_PERMISSION_REQUEST:
-                break;
-            default:
-                app.onRequestPermissionsResult(requestCode, permissions, grantResults);
-                break;
-        }
+    public static float distance(Address address1, Address address2){
+        Location a = new Location("");
+        Location b = new Location("");
+
+        a.setLongitude(address1.getLongitude());
+        a.setLatitude(address1.getLatitude());
+
+        b.setLongitude(address2.getLongitude());
+        b.setLatitude(address2.getLatitude());
+
+        return a.distanceTo(b);
     }
 }

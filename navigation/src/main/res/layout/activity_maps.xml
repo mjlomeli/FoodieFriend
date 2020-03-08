@@ -153,7 +153,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/textView_Recommend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Order the protein style burger"
@@ -163,7 +163,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/textView_Options"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4x4, 3x3, 2x2, 1x1, No Cheese"
@@ -173,7 +173,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/textView_Calories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="910, 710, 520, 320, 260"
