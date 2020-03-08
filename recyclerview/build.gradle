@@ -58,5 +58,6 @@ dependencies {
     /* External Libraries */
     implementation 'com.lorentzos.swipecards:library:1.0.9'
     implementation project(path: ':lib')
+    implementation project(path: ':androidlib')
 
 }

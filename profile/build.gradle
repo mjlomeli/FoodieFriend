@@ -57,5 +57,8 @@ dependencies {
 
     /* External Libraries */
     implementation 'com.lorentzos.swipecards:library:1.0.9'
-
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation project(path: ':androidlib')
+    implementation project(path: ':lib')
 }
