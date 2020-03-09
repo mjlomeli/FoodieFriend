@@ -1,6 +1,10 @@
 package com.interview.signin.data;
 
-import com.interview.signin.data.model.LoggedInUser;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 
@@ -9,30 +13,17 @@ import java.io.IOException;
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
 public class LoginDataSource {
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    public Result<LoggedInUser> login(String username, String password) {
-
-        try {
-            // TODO: handle loggedInUser authentication by checking their username matches password
-            if (username.equals("anteater") && password.equals("zotzot")) {
-                LoggedInUser fakeUser =
-                        new LoggedInUser(
-                                java.util.UUID.randomUUID().toString(),
-                                "anteater");
-                return new Result.Success<>(fakeUser);
-            }
-            else {
-                return new Result.Error(new IOException("Your username or password is incorrect"));
-            }
-
-        } catch (Exception e) {
-            return new Result.Error(new IOException("Error logging in", e));
-        }
+    public Task<AuthResult> login(String username, String password) {
+        // TODO: handle loggedInUser authentication by checking their username matches password
+        return firebaseAuth.signInWithEmailAndPassword(username,password);
     }
 
     public void logout() {
         // TODO: revoke authentication
         // TODO: Remove all cached data here
+        firebaseAuth.signOut();
     }
 }
 

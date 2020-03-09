@@ -10,9 +10,14 @@ package com.interview.signin.ui.login;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 class LoginResult {
     @Nullable
-    private LoggedInUserView success;
+    private Task<AuthResult> success;
     @Nullable
     private Integer error;
 
@@ -20,12 +25,12 @@ class LoginResult {
         this.error = error;
     }
 
-    LoginResult(@Nullable LoggedInUserView success) {
+    LoginResult(@Nullable Task<AuthResult> success) {
         this.success = success;
     }
 
     @Nullable
-    LoggedInUserView getSuccess() {
+    Task<AuthResult> getSuccess() {
         return success;
     }
 
