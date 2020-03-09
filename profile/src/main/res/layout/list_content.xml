@@ -101,7 +101,7 @@
         app:layout_constraintGuide_percent="0.02" />
 
     <TextView
-        android:id="@+id/textView_DrinkMods"
+        android:id="@+id/textView_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Modifications"
@@ -111,7 +111,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline11" />
 
     <TextView
-        android:id="@+id/textView_FoodSize"
+        android:id="@+id/textView_Data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Food-Size"
@@ -126,7 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Drink-Size"
-        app:layout_constraintBottom_toTopOf="@+id/textView_DrinkMods"
+        app:layout_constraintBottom_toTopOf="@+id/textView_Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline11"

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -57,8 +57,6 @@ dependencies {
 
     /* External Libraries */
     implementation 'com.lorentzos.swipecards:library:1.0.9'
-
-    /* Permissions */
-    implementation 'pub.devrel:easypermissions:3.0.0'
+    implementation 'com.shobhitpuri.custombuttons:google-signin:1.1.0'
 
 }

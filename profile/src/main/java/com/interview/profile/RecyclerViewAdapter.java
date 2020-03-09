@@ -55,7 +55,7 @@ public class RecyclerViewAdapter extends
 
             imageView_logo = (ImageView) itemView.findViewById(R.id.imageview_CompanyLogo);
             textView_FoodName = (TextView) itemView.findViewById(R.id.textView_FoodName);
-            textView_FoodSize = (TextView) itemView.findViewById(R.id.textView_FoodSize);
+            textView_FoodSize = (TextView) itemView.findViewById(R.id.textView_Data);
             textView_FoodMods = (TextView) itemView.findViewById(R.id.textView_FoodMods);
             textView_DrinkName = (TextView) itemView.findViewById(R.id.textView_DrinkName);
             textView_DrinkSize = (TextView) itemView.findViewById(R.id.textView_DrinkSize);

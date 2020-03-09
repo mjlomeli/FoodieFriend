@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    ArrayList<String> profile;
     ArrayList<Logo> logos;
 
     @Override

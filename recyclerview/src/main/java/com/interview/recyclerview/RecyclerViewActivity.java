@@ -31,7 +31,6 @@ public class RecyclerViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
-
         startListView();
 
         // connecting list to firebase NOTE: scroll down and click on real time database & select test mode
