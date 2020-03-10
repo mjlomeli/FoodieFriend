@@ -14,12 +14,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.interview.signin.R;
 import android.app.Activity;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -170,6 +173,8 @@ public class LoginActivity extends AppCompatActivity {
          * next line of code inside the "onComplete" method
          */
         loadingProgressBar.setVisibility(View.VISIBLE);
+        @ColorInt final int color = Color.rgb(124, 124, 135);
+
         disableAllInputs();
         mFirebaseAuth.signInWithEmailAndPassword(usernameEditText.getText().toString(),
                 passwordEditText.getText().toString())
@@ -179,17 +184,20 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             indicator.setText("Worked");
-                            enableAllInputs();
+                            enableAllInputs(color);
                             loadingProgressBar.setVisibility(View.INVISIBLE);
+                            //TODO: success sign in. Must go to the next activity here or call updateUI
+
                         } else {
                             // If sign in fails, display a message to the user.
                             showLoginFailed(indicator);
-                            enableAllInputs();
+                            enableAllInputs(color);
                             loadingProgressBar.setVisibility(View.INVISIBLE);
+                            //TODO: failed signing in. What do you do after?
+
                         }
                     }
                 });
-
     }
 
 
@@ -201,12 +209,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                    updateUI(user);
+                    indicator.setText("Worked and created");
                 } else {
                     // If sign in fails, display a message to the user.
-                    Toast.makeText(LoginActivity.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-                    updateUI(null);
+                    showLoginFailed(indicator);
                 }
             }
         });
@@ -214,7 +220,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClick_CreateNewAccount(View view){
         //TODO: Create an account form and Link a create account button
-
+        createAccount(usernameEditText.getText().toString(), passwordEditText.getText().toString());
     }
 
     public void onClick_ShowPassword(View view){
@@ -266,11 +272,15 @@ public class LoginActivity extends AppCompatActivity {
         showPassword.setEnabled(false);
         keepMeSignedIn.setEnabled(false);
     }
-    private void enableAllInputs(){
+    private void enableAllInputs(@ColorInt int c){
         usernameEditText.setEnabled(true);
         passwordEditText.setEnabled(true);
+
+        loginButton.setBackgroundColor(c);
         loginButton.setEnabled(true);
+        createAccount.setBackgroundColor(c);
         createAccount.setEnabled(true);
+
         googleButton.setEnabled(true);
         indicator.setEnabled(true);
         showPassword.setEnabled(true);

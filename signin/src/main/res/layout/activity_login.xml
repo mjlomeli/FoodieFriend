@@ -269,7 +269,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:background="@drawable/ic_login_grey_button"
+        android:background="@drawable/button_action_colors"
         android:enabled="false"
         android:onClick="onClick_SignIn"
         android:text="Sign In"
@@ -285,8 +285,8 @@
         android:id="@+id/button_Create_Account"
         android:layout_width="0dp"
         android:layout_height="51dp"
-        android:background="@drawable/ic_login_grey_button"
-        android:onClick="onClick_SignIn"
+        android:background="@drawable/button_action_colors"
+        android:onClick="onClick_CreateNewAccount"
         android:text="Create new account"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -294,7 +294,7 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@+id/guideline19"
         app:layout_constraintTop_toTopOf="@+id/guideline20"
-        app:layout_constraintVertical_bias="0.05"/>
+        app:layout_constraintVertical_bias="0.05" />
 
     <com.shobhitpuri.custombuttons.GoogleSignInButton
         android:id="@+id/button_Google"
