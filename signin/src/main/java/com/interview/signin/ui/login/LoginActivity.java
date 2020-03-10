@@ -63,23 +63,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-
         authStateListener = new AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() != null) {
-                    updateUI(firebaseAuth.getCurrentUser());
-                }
-                startActivityForResult(
-                        AuthUI.getInstance()
-                                .createSignInIntentBuilder()
-                                .setAvailableProviders(Arrays.asList(
-                                        new AuthUI.IdpConfig.GoogleBuilder().build()))
-                                .build(),
-                        RC_SIGN_IN);
-            }
 
+            }
         };
+
         usernameEditText = (EditText) findViewById(R.id.username);
         passwordEditText = (EditText) findViewById(R.id.password);
 
@@ -94,38 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         indicator = (TextView) findViewById(R.id.textView_Indicator);
         showPassword = (CheckBox) findViewById(R.id.checkBox_Show_Password);
         keepMeSignedIn = (CheckBox) findViewById(R.id.checkBox_Keep_Signed_In);
-
-        googleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mFirebaseAuth.addAuthStateListener(new AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        if (firebaseAuth.getCurrentUser() != null){
-                            updateUI(firebaseAuth.getCurrentUser());
-                        }
-                        else {
-                            startActivityForResult(
-                                    AuthUI.getInstance()
-                                            .createSignInIntentBuilder()
-                                            .setAvailableProviders(Arrays.asList(
-                                                    new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                                    new AuthUI.IdpConfig.FacebookBuilder().build(),
-                                                    new AuthUI.IdpConfig.TwitterBuilder().build(),
-                                                    new AuthUI.IdpConfig.MicrosoftBuilder().build(),
-                                                    new AuthUI.IdpConfig.YahooBuilder().build(),
-                                                    new AuthUI.IdpConfig.AppleBuilder().build(),
-                                                    new AuthUI.IdpConfig.EmailBuilder().build(),
-                                                    new AuthUI.IdpConfig.PhoneBuilder().build(),
-                                                    new AuthUI.IdpConfig.AnonymousBuilder().build()))
-                                            .build(),
-                                    RC_SIGN_IN);
-                        }
-                    }
-                });
-            }
-        });
 
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
@@ -181,8 +139,6 @@ public class LoginActivity extends AppCompatActivity {
                 passwordEditText.getText().toString());
     }
 
-
-
     private void updateUiWithUser(Task<AuthResult> authResultTask) {
         authResultTask.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -206,7 +162,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClick_SignIn(View view){
+        /**
+         * This is a runnable multi-threaded overriden function.
+         * If you run something outside this, its not guaranteed
+         * you're signed in until its completed. If you must
+         * be signed in FIRST before continuing on, place the
+         * next line of code inside the "onComplete" method
+         */
         loadingProgressBar.setVisibility(View.VISIBLE);
+        disableAllInputs();
         mFirebaseAuth.signInWithEmailAndPassword(usernameEditText.getText().toString(),
                 passwordEditText.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -214,17 +178,18 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                            updateUI(user);
+                            indicator.setText("Worked");
+                            enableAllInputs();
+                            loadingProgressBar.setVisibility(View.INVISIBLE);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                             showLoginFailed(indicator);
+                            enableAllInputs();
+                            loadingProgressBar.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
+
     }
 
 
@@ -249,8 +214,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClick_CreateNewAccount(View view){
         //TODO: Create an account form and Link a create account button
-    }
 
+    }
 
     public void onClick_ShowPassword(View view){
         if (showPassword.isChecked())
@@ -261,14 +226,26 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    public void onClick_GoogleButton(View view){
+        // This works
+        if (mFirebaseAuth.getCurrentUser() != null) {
+            updateUI(mFirebaseAuth.getCurrentUser());
+        }
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(Arrays.asList(
+                                new AuthUI.IdpConfig.GoogleBuilder().build()))
+                        .build(),
+                RC_SIGN_IN);
+    }
+
     public void onClick_KeepMeSignedIn(View view){
         //TODO: set sign in options to stay signed in
     }
 
     public void updateUI(FirebaseUser user){
         if (user != null) {
-
-
             String welcome = getString(R.string.welcome) + user.getDisplayName();
 
             /////////////////////////////////////////
@@ -279,11 +256,32 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void disableAllInputs(){
+        usernameEditText.setEnabled(false);
+        passwordEditText.setEnabled(false);
+        loginButton.setEnabled(false);
+        createAccount.setEnabled(false);
+        googleButton.setEnabled(false);
+        indicator.setEnabled(false);
+        showPassword.setEnabled(false);
+        keepMeSignedIn.setEnabled(false);
+    }
+    private void enableAllInputs(){
+        usernameEditText.setEnabled(true);
+        passwordEditText.setEnabled(true);
+        loginButton.setEnabled(true);
+        createAccount.setEnabled(true);
+        googleButton.setEnabled(true);
+        indicator.setEnabled(true);
+        showPassword.setEnabled(true);
+        keepMeSignedIn.setEnabled(true);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
-        updateUI(currentUser);
+        if (mFirebaseAuth != null && mFirebaseAuth.getCurrentUser() != null)
+            mFirebaseAuth.signOut();
     }
 
     @Override
@@ -297,7 +295,4 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
         mFirebaseAuth.addAuthStateListener(authStateListener);
     }
-
-
-
 }
