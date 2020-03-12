@@ -29,16 +29,6 @@ public class RecyclerViewActivity extends AppCompatActivity {
     //////////  LAYOUT VARIABLES  //////////////////////////////////////////
     private RecyclerView recyclerView_Frame;
 
-    private ImageView imageView_Logo;
-
-    private TextView textView_FoodName;
-    private TextView textView_FoodMods;
-    private TextView textView_FoodSize;
-
-    private TextView textView_DrinkName;
-    private TextView textView_DrinkMods;
-    private TextView textView_DrinkSize;
-
     //////////  Backend Variables   ////////////////////////////////////////
     ArrayList<Logo> logos;
 
@@ -52,15 +42,6 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
         //////  Layout Variables Assigned    //////////////////////////////
         recyclerView_Frame = (RecyclerView) findViewById(R.id.recyclerViewFrame);
-
-        imageView_Logo = (ImageView) findViewById(R.id.imageview_CompanyLogo);
-
-        textView_FoodName = (TextView) findViewById(R.id.textView_FoodName);
-        textView_FoodMods = (TextView) findViewById(R.id.textView_FoodMods);
-        textView_FoodSize = (TextView) findViewById(R.id.textView_FoodSize);
-        textView_DrinkName = (TextView) findViewById(R.id.textView_DrinkName);
-        textView_DrinkMods = (TextView) findViewById(R.id.textView_DrinkMods);
-        textView_DrinkSize = (TextView) findViewById(R.id.textView_DrinkSize);
 
         startListView();
 

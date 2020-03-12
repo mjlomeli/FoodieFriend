@@ -1,18 +1,13 @@
 package com.interview.signin.ui.login;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.interview.androidlib.Start;
 import com.interview.signin.R;
-import android.app.Activity;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -22,15 +17,12 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.location.Address;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -73,6 +65,17 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //////  Assigned Layout Variables    //////////////////////////////
+        assignLayoutVariables();
+
+        //TODO: remove the next line of code when ready to deploy
+        editText_Username.setText("joe@uci.edu");
+        editText_Password.setText("zotzot");
+
+        setTextListenerRules();
+    }
+
+    private void assignLayoutVariables(){
+        //////  Assigned Layout Variables    //////////////////////////////
         editText_Username = (EditText) findViewById(R.id.username);
         editText_Password = (EditText) findViewById(R.id.password);
 
@@ -94,12 +97,9 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         };
+    }
 
-
-        //TODO: remove the next line of code when ready to deploy
-        editText_Username.setText("joe@uci.edu");
-        editText_Password.setText("zotzot");
-
+    private void setTextListenerRules(){
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
@@ -199,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
                             enableAllInputs(color);
                             progressBar_Loading.setVisibility(View.INVISIBLE);
                             //TODO: success sign in. Must go to the next activity here or call updateUI
-
+                            //Start.NewActivity(this, Swipe.class, mFirebaseAuth.getCurrentUser());
                         } else {
                             // If sign in fails, display a message to the user.
                             showLoginFailed(textView_Indicator);
@@ -211,7 +211,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     private void createAccount(String username, String password){
         mFirebaseAuth.createUserWithEmailAndPassword(editText_Username.getText().toString(),
@@ -270,7 +269,6 @@ public class LoginActivity extends AppCompatActivity {
             // TODO : initiate the next intent here
             /////////////////////////////////////////
 
-            Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -286,6 +284,7 @@ public class LoginActivity extends AppCompatActivity {
         checkBox_ShowPassword.setEnabled(false);
         checkBox_KeepMeSignedIn.setEnabled(false);
     }
+
     private void enableAllInputs(@ColorInt int c){
         editText_Username.setEnabled(true);
         editText_Password.setEnabled(true);

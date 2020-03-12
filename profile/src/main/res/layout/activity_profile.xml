@@ -192,6 +192,7 @@
         app:layout_constraintGuide_percent="0.35" />
 
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout_Layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#CDCDCD"
@@ -206,6 +207,7 @@
             android:id="@+id/tabItem_ProfileTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:text="Profile" />
 
         <com.google.android.material.tabs.TabItem
