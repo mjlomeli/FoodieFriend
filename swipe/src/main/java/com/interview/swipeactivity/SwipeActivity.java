@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,26 +19,45 @@ import java.util.Arrays;
 
 public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapterView.onFlingListener,
         SwipeFlingAdapterView.OnItemClickListener, LocationListener {
+
+    //////////  LAYOUT VARIABLES  //////////////////////////////////////////
+    private ImageView imageView_TrainingBackground;
+    private ImageView imageView_TrainingImage;
+
+    private TextView textView_itemName;
     private TextView textView_question;
     private TextView textView_itemDescription;
-    private TextView textView_itemName;
+
+    private Button button_Info;
+    private Button button_Like;
+    private Button button_Dislike;
+
+    //////////  Backend Variables   ////////////////////////////////////////
+
     private GPS gps;
 
-    //private ArrayList<RowItem> imageContents;
     private ArrayAdapter<String> arrayAdapterImg;
-    private int i;
     private SwipeFlingAdapterView flingContainer;
 
     private ArrayList<String> str = new ArrayList<>(Arrays.asList("chicken", "beef", "salad", "soup"));
 
+
+    //////////  Functions   ////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe);
 
+        imageView_TrainingBackground = (ImageView) findViewById(R.id.imageView_TrainingBackground);
+        imageView_TrainingImage = (ImageView) findViewById(R.id.imageView_TrainingImage);
+
+        textView_itemName = (TextView) findViewById(R.id.textView_itemName);
         textView_question = (TextView) findViewById(R.id.textView_question);
         textView_itemDescription = (TextView) findViewById(R.id.textView_itemDescription);
-        textView_itemName = (TextView) findViewById(R.id.textView_itemName);
+
+        button_Info = (Button) findViewById(R.id.button_Info);
+        button_Like = (Button) findViewById(R.id.button_like);
+        button_Dislike = (Button) findViewById(R.id.button_dislike);
 
         gps = new GPS(this);
 
