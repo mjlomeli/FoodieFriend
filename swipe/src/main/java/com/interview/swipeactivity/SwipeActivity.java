@@ -24,9 +24,10 @@ public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapte
     private ImageView imageView_TrainingBackground;
     private ImageView imageView_TrainingImage;
 
-    private TextView textView_itemName;
-    private TextView textView_question;
-    private TextView textView_itemDescription;
+    private TextView textView_ItemName;
+    private TextView textView_Question;
+    private TextView textView_ItemDescription;
+    private TextView textView_CardText;
 
     private Button button_Info;
     private Button button_Like;
@@ -48,16 +49,20 @@ public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe);
 
+        //////  Layout Variables Assigned    //////////////////////////////
         imageView_TrainingBackground = (ImageView) findViewById(R.id.imageView_TrainingBackground);
         imageView_TrainingImage = (ImageView) findViewById(R.id.imageView_TrainingImage);
 
-        textView_itemName = (TextView) findViewById(R.id.textView_itemName);
-        textView_question = (TextView) findViewById(R.id.textView_question);
-        textView_itemDescription = (TextView) findViewById(R.id.textView_itemDescription);
+        textView_ItemName = (TextView) findViewById(R.id.textView_itemName);
+        textView_Question = (TextView) findViewById(R.id.textView_question);
+        textView_ItemDescription = (TextView) findViewById(R.id.textView_itemDescription);
+        textView_CardText = (TextView) findViewById(R.id.textView_card);
 
         button_Info = (Button) findViewById(R.id.button_Info);
         button_Like = (Button) findViewById(R.id.button_like);
         button_Dislike = (Button) findViewById(R.id.button_dislike);
+
+        ///////////////////////////////////////////////////////////////////
 
         gps = new GPS(this);
 
@@ -119,7 +124,7 @@ public class SwipeActivity extends AppCompatActivity implements SwipeFlingAdapte
     @Override
     public void onItemClicked(int i, Object o) {
         //TODO: Do you need to change the image when clicked/tapped?
-        textView_itemDescription.setText(gps.getLastKnownAddress().toString());
+        textView_ItemDescription.setText(gps.getLastKnownAddress().toString());
     }
 
     public void onClick_Dislike(View view){
