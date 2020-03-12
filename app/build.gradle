@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -45,6 +45,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
     implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.firebase:firebase-functions:19.0.2'
 
     /* Google Libraries */
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -58,4 +59,8 @@ dependencies {
 
     /* External Libraries */
     implementation 'com.lorentzos.swipecards:library:1.0.9'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.shobhitpuri.custombuttons:google-signin:1.1.0'
+    implementation project(path: ':androidlib')
+    implementation project(path: ':lib')
 }

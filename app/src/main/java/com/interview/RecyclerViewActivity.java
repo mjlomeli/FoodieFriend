@@ -1,4 +1,4 @@
-package com.interview.recyclerview;
+package com.interview;
 
 /**
  * @author Mauricio Lomeli
@@ -9,42 +9,30 @@ package com.interview.recyclerview;
  * It displays the images of logos from an API and the results from the index.
  */
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.io.BufferedReader;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableReference;
 import com.google.firebase.functions.HttpsCallableResult;
-import com.interview.androidlib.Firebase;
-import com.interview.androidlib.Profile;
 import com.interview.lib.DateTime;
-import com.interview.lib.Json;
-import com.interview.lib.Logo;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RecyclerViewActivity extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener {

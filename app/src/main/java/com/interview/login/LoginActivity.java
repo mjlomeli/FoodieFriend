@@ -1,26 +1,9 @@
-package com.interview.signin.ui.login;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuth.AuthStateListener;
-import com.google.firebase.auth.FirebaseUser;
-import com.interview.androidlib.Start;
-import com.interview.signin.R;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+package com.interview.login;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -33,6 +16,24 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuth.AuthStateListener;
+import com.google.firebase.auth.FirebaseUser;
+import com.interview.R;
+import com.interview.RecyclerViewActivity;
 
 import java.util.Arrays;
 
@@ -65,8 +66,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        FirebaseApp.initializeApp(this);
-
         //////  Assigned Layout Variables    //////////////////////////////
         assignLayoutVariables();
 
@@ -98,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         //////  Assigned Backend Variables    //////////////////////////////
+        FirebaseApp.initializeApp(this);
         mFirebaseAuth = FirebaseAuth.getInstance();
         authStateListener = new AuthStateListener() {
             @Override
@@ -194,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
          */
         progressBar_Loading.setVisibility(View.VISIBLE);
         @ColorInt final int color = Color.rgb(124, 124, 135);
-
+        final Intent intent = new Intent(this, RecyclerViewActivity.class);
         disableAllInputs();
         mFirebaseAuth.signInWithEmailAndPassword(editText_Username.getText().toString(),
                 editText_Password.getText().toString())
@@ -208,6 +208,7 @@ public class LoginActivity extends AppCompatActivity {
                             progressBar_Loading.setVisibility(View.INVISIBLE);
                             //TODO: success sign in. Must go to the next activity here or call updateUI
                             //Start.NewActivity(this, Swipe.class, mFirebaseAuth.getCurrentUser());
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             showLoginFailed(textView_Indicator);
