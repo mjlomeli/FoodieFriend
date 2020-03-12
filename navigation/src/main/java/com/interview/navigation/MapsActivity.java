@@ -7,13 +7,15 @@ package com.interview.navigation;
  * Google's maps and provides an interactive map for the user to view
  * the relative location of the recommendation.
  */
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,12 +28,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.interview.androidlib.GPS;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+
+    //////////  LAYOUT VARIABLES  //////////////////////////////////////////
+    private ImageView imageView_Logo;
+
     private TextView textView_Title;
     private TextView textView_Radius;
     private TextView textView_Calories;
     private TextView textView_Recommend;
     private TextView textView_Options;
 
+    private View fragment_Map;
+
+    //////////  Backend Variables   ////////////////////////////////////////
     private GoogleMap mMap;
     private GPS gps;
 
@@ -40,12 +49,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        //////  Layout Variables Assigned    //////////////////////////////
         textView_Title = (TextView) findViewById(R.id.textView_Title);
         textView_Radius = (TextView) findViewById(R.id.textView_Radius);
         textView_Calories = (TextView) findViewById(R.id.textView_Calories);
         textView_Recommend = (TextView) findViewById(R.id.textView_Recommend);
         textView_Options = (TextView) findViewById(R.id.textView_Options);
 
+        fragment_Map = (View) findViewById(R.id.fragmentmap);
+
+
+        //////////  Backend Variables Assigned  ////////////////////////////////////////
         this.gps = new GPS(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -70,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng gpsCenterCoord = new LatLng(40, -100);
         LatLng gpsBoundaryCoord = new LatLng(10, -154);
-        LatLngBounds unitedStates = new LatLngBounds(gpsBoundaryCoord, gpsBoundaryCoord);
+        LatLngBounds unitedStates = new LatLngBounds(gpsBoundaryCoord, gpsCenterCoord);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(unitedStates.getCenter(), 14));
     }
 

@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageView_ProfileImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView_UserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User's Name"
@@ -149,7 +149,7 @@
         app:srcCompat="@drawable/ic_profile_dislikes" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView_TotalDislikes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="4534"
@@ -160,7 +160,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textView_TotalLikes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="22"
@@ -203,16 +203,19 @@
         app:tabRippleColor="#F4A7A7">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItem_ProfileTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Profile" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItem_GoalsTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Goals" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItem_DataTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Data" />

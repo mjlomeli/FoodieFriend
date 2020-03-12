@@ -35,16 +35,6 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_listview_item_background" />
 
-    <TextView
-        android:id="@+id/textView_FoodName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MenuItem-Food"
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toTopOf="@+id/guideline13" />
-
     <ImageView
         android:id="@+id/imageview_CompanyLogo"
         android:layout_width="0dp"
@@ -59,6 +49,16 @@
         app:layout_constraintTop_toTopOf="@+id/imageview_Background"
         app:layout_constraintVertical_bias="0.5"
         app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/textView_FoodName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MenuItem-Food"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toTopOf="@+id/guideline13" />
 
     <TextView
         android:id="@+id/textView_DrinkName"

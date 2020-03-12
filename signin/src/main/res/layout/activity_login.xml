@@ -257,12 +257,14 @@
         android:layout_height="wrap_content"
         android:text="Forgot \npassword?"
         android:textColor="#055386"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline23"
         app:layout_constraintEnd_toStartOf="@+id/guideline18"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.699" />
+        app:layout_constraintVertical_bias="0.699"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/login"

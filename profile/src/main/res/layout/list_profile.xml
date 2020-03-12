@@ -7,7 +7,7 @@
 
 
     <TextView
-        android:id="@+id/textView_Title"
+        android:id="@+id/textView_AddressTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Address Title"
@@ -45,7 +45,7 @@
         app:layout_constraintGuide_percent="0.48" />
 
     <TextView
-        android:id="@+id/textView_Data"
+        android:id="@+id/textView_Address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Address"

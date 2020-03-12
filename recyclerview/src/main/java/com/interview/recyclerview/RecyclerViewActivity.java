@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import com.interview.lib.Logo;
 import com.google.firebase.database.DatabaseReference;
@@ -21,9 +25,23 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RecyclerViewActivity extends AppCompatActivity {
 
+
+    //////////  LAYOUT VARIABLES  //////////////////////////////////////////
+    private RecyclerView recyclerView_Frame;
+
+    private ImageView imageView_Logo;
+
+    private TextView textView_FoodName;
+    private TextView textView_FoodMods;
+    private TextView textView_FoodSize;
+
+    private TextView textView_DrinkName;
+    private TextView textView_DrinkMods;
+    private TextView textView_DrinkSize;
+
+    //////////  Backend Variables   ////////////////////////////////////////
     ArrayList<Logo> logos;
 
-    // Firebase variables
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
@@ -31,6 +49,19 @@ public class RecyclerViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
+
+        //////  Layout Variables Assigned    //////////////////////////////
+        recyclerView_Frame = (RecyclerView) findViewById(R.id.recyclerViewFrame);
+
+        imageView_Logo = (ImageView) findViewById(R.id.imageview_CompanyLogo);
+
+        textView_FoodName = (TextView) findViewById(R.id.textView_FoodName);
+        textView_FoodMods = (TextView) findViewById(R.id.textView_FoodMods);
+        textView_FoodSize = (TextView) findViewById(R.id.textView_FoodSize);
+        textView_DrinkName = (TextView) findViewById(R.id.textView_DrinkName);
+        textView_DrinkMods = (TextView) findViewById(R.id.textView_DrinkMods);
+        textView_DrinkSize = (TextView) findViewById(R.id.textView_DrinkSize);
+
         startListView();
 
         // connecting list to firebase NOTE: scroll down and click on real time database & select test mode

@@ -46,25 +46,47 @@ import java.util.Arrays;
 public class LoginActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 1;
 
-    private LoginViewModel loginViewModel;
-    private EditText usernameEditText;
-    private EditText passwordEditText;
-    private Button loginButton;
-    private Button createAccount;
-    private Button googleButton;
-    private ProgressBar loadingProgressBar;
-    private TextView indicator;
-    private CheckBox showPassword;
-    private CheckBox keepMeSignedIn;
+    //////////  LAYOUT VARIABLES  //////////////////////////////////////////
+    private EditText editText_Username;
+    private EditText editText_Password;
 
+    private CheckBox checkBox_KeepMeSignedIn;
+    private CheckBox checkBox_ShowPassword;
+
+    private Button button_Login;
+    private Button button_CreateAccount;
+    private Button button_GoogleSignIn;
+
+    private ProgressBar progressBar_Loading;
+
+    private TextView textView_Indicator;
+
+    //////////  Backend Variables   ////////////////////////////////////////
+    private LoginViewModel loginViewModel;
     private FirebaseAuth mFirebaseAuth;
     private AuthStateListener authStateListener;
 
+    //////////  Functions   ////////////////////////////////////////////////
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //////  Assigned Layout Variables    //////////////////////////////
+        editText_Username = (EditText) findViewById(R.id.username);
+        editText_Password = (EditText) findViewById(R.id.password);
+
+        button_Login = (Button) findViewById(R.id.login);
+        button_CreateAccount = (Button) findViewById(R.id.button_Create_Account);
+        button_GoogleSignIn = (Button) findViewById(R.id.button_Google);
+
+        progressBar_Loading = (ProgressBar) findViewById(R.id.loading);
+        textView_Indicator = (TextView) findViewById(R.id.textView_Indicator);
+        checkBox_ShowPassword = (CheckBox) findViewById(R.id.checkBox_Show_Password);
+        checkBox_KeepMeSignedIn = (CheckBox) findViewById(R.id.checkBox_Keep_Signed_In);
+
+
+        //////  Assigned Backend Variables    //////////////////////////////
         mFirebaseAuth = FirebaseAuth.getInstance();
         authStateListener = new AuthStateListener() {
             @Override
@@ -73,20 +95,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        usernameEditText = (EditText) findViewById(R.id.username);
-        passwordEditText = (EditText) findViewById(R.id.password);
 
         //TODO: remove the next line of code when ready to deploy
-        usernameEditText.setText("anteater@uci.edu");
-        passwordEditText.setText("zotzot");
-
-        loginButton = (Button) findViewById(R.id.login);
-        createAccount = (Button) findViewById(R.id.button_Create_Account);
-        googleButton = (Button) findViewById(R.id.button_Google);
-        loadingProgressBar = (ProgressBar) findViewById(R.id.loading);
-        indicator = (TextView) findViewById(R.id.textView_Indicator);
-        showPassword = (CheckBox) findViewById(R.id.checkBox_Show_Password);
-        keepMeSignedIn = (CheckBox) findViewById(R.id.checkBox_Keep_Signed_In);
+        editText_Username.setText("joe@uci.edu");
+        editText_Password.setText("zotzot");
 
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
@@ -97,12 +109,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginFormState == null) {
                     return;
                 }
-                loginButton.setEnabled(loginFormState.isDataValid());
+                button_Login.setEnabled(loginFormState.isDataValid());
                 if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
+                    editText_Username.setError(getString(loginFormState.getUsernameError()));
                 }
                 if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
+                    editText_Password.setError(getString(loginFormState.getPasswordError()));
                 }
             }
         });
@@ -120,26 +132,26 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                loginViewModel.loginDataChanged(editText_Username.getText().toString(),
+                        editText_Password.getText().toString());
             }
         };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        editText_Username.addTextChangedListener(afterTextChangedListener);
+        editText_Password.addTextChangedListener(afterTextChangedListener);
+        editText_Password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                    loginViewModel.login(editText_Username.getText().toString(),
+                            editText_Password.getText().toString());
                 }
                 return false;
             }
         });
 
-        loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-                passwordEditText.getText().toString());
+        loginViewModel.loginDataChanged(editText_Username.getText().toString(),
+                editText_Password.getText().toString());
     }
 
     private void updateUiWithUser(Task<AuthResult> authResultTask) {
@@ -172,27 +184,27 @@ public class LoginActivity extends AppCompatActivity {
          * be signed in FIRST before continuing on, place the
          * next line of code inside the "onComplete" method
          */
-        loadingProgressBar.setVisibility(View.VISIBLE);
+        progressBar_Loading.setVisibility(View.VISIBLE);
         @ColorInt final int color = Color.rgb(124, 124, 135);
 
         disableAllInputs();
-        mFirebaseAuth.signInWithEmailAndPassword(usernameEditText.getText().toString(),
-                passwordEditText.getText().toString())
+        mFirebaseAuth.signInWithEmailAndPassword(editText_Username.getText().toString(),
+                editText_Password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            indicator.setText("Worked");
+                            textView_Indicator.setText("Worked");
                             enableAllInputs(color);
-                            loadingProgressBar.setVisibility(View.INVISIBLE);
+                            progressBar_Loading.setVisibility(View.INVISIBLE);
                             //TODO: success sign in. Must go to the next activity here or call updateUI
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            showLoginFailed(indicator);
+                            showLoginFailed(textView_Indicator);
                             enableAllInputs(color);
-                            loadingProgressBar.setVisibility(View.INVISIBLE);
+                            progressBar_Loading.setVisibility(View.INVISIBLE);
                             //TODO: failed signing in. What do you do after?
 
                         }
@@ -202,17 +214,17 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void createAccount(String username, String password){
-        mFirebaseAuth.createUserWithEmailAndPassword(usernameEditText.getText().toString(),
-                passwordEditText.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mFirebaseAuth.createUserWithEmailAndPassword(editText_Username.getText().toString(),
+                editText_Username.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                    indicator.setText("Worked and created");
+                    textView_Indicator.setText("Worked and created");
                 } else {
                     // If sign in fails, display a message to the user.
-                    showLoginFailed(indicator);
+                    showLoginFailed(textView_Indicator);
                 }
             }
         });
@@ -220,15 +232,15 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClick_CreateNewAccount(View view){
         //TODO: Create an account form and Link a create account button
-        createAccount(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+        createAccount(editText_Username.getText().toString(), editText_Password.getText().toString());
     }
 
     public void onClick_ShowPassword(View view){
-        if (showPassword.isChecked())
-            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        if (checkBox_ShowPassword.isChecked())
+            editText_Password.setInputType(InputType.TYPE_CLASS_TEXT);
         else {
-            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            passwordEditText.setTypeface(Typeface.DEFAULT);
+            editText_Password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            editText_Password.setTypeface(Typeface.DEFAULT);
         }
     }
 
@@ -263,28 +275,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void disableAllInputs(){
-        usernameEditText.setEnabled(false);
-        passwordEditText.setEnabled(false);
-        loginButton.setEnabled(false);
-        createAccount.setEnabled(false);
-        googleButton.setEnabled(false);
-        indicator.setEnabled(false);
-        showPassword.setEnabled(false);
-        keepMeSignedIn.setEnabled(false);
+        editText_Username.setEnabled(false);
+        editText_Password.setEnabled(false);
+
+        button_Login.setEnabled(false);
+        button_CreateAccount.setEnabled(false);
+        button_GoogleSignIn.setEnabled(false);
+
+        textView_Indicator.setEnabled(false);
+        checkBox_ShowPassword.setEnabled(false);
+        checkBox_KeepMeSignedIn.setEnabled(false);
     }
     private void enableAllInputs(@ColorInt int c){
-        usernameEditText.setEnabled(true);
-        passwordEditText.setEnabled(true);
+        editText_Username.setEnabled(true);
+        editText_Password.setEnabled(true);
 
-        loginButton.setBackgroundColor(c);
-        loginButton.setEnabled(true);
-        createAccount.setBackgroundColor(c);
-        createAccount.setEnabled(true);
+        button_Login.setBackgroundColor(c);
+        button_Login.setEnabled(true);
+        button_CreateAccount.setBackgroundColor(c);
+        button_CreateAccount.setEnabled(true);
 
-        googleButton.setEnabled(true);
-        indicator.setEnabled(true);
-        showPassword.setEnabled(true);
-        keepMeSignedIn.setEnabled(true);
+        button_GoogleSignIn.setEnabled(true);
+        textView_Indicator.setEnabled(true);
+        checkBox_ShowPassword.setEnabled(true);
+        checkBox_KeepMeSignedIn.setEnabled(true);
     }
 
     @Override
