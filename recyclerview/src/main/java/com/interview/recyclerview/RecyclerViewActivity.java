@@ -9,21 +9,27 @@ package com.interview.recyclerview;
  * It displays the images of logos from an API and the results from the index.
  */
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import com.interview.androidlib.Profile;
 import com.interview.lib.Logo;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class RecyclerViewActivity extends AppCompatActivity {
+public class RecyclerViewActivity extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener {
 
 
     //////////  LAYOUT VARIABLES  //////////////////////////////////////////
@@ -44,44 +50,26 @@ public class RecyclerViewActivity extends AppCompatActivity {
         recyclerView_Frame = (RecyclerView) findViewById(R.id.recyclerViewFrame);
 
         startListView();
-
-        // connecting list to firebase NOTE: scroll down and click on real time database & select test mode
-        //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDelete((ItemViewAdapter) adapter));
-        //itemTouchHelper.attachToRecyclerView(recyclerView);
-
-
-        // Firebase: must do these in order
-        //database = FirebaseDatabase.getInstance();
-        //myRef = database.getReference("Items"); // gets the branch called Item from your DB
-        // note if it doesn't exist, Firebase will create it.
-        // Your database needs a unique key, else it will be overrided
-        //String key = myRef.push().getKey(); // generates a random key for us
-        //myRef.child(key).setValue("My db has this as a value");
-        // on friday we will go over updating the recycler view
-
-
-        /* //Demonstrations Only
-        Intent intent = new Intent(this, MapsActivity.class);
-        Pair<RecyclerViewActivity, Intent> pair = new Pair<>(this, intent);
-        SleepTimer.delay(5, pair);
-         */
     }
 
     private void startListView(){
-        // ...
-        // Lookup the recyclerview in activity layout
-        RecyclerView recyclerViewFrame = (RecyclerView) findViewById(R.id.recyclerViewFrame);
-
         // Initialize contacts
         logos = Logo.logos();
 
         // Create adapter passing in the sample user data
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(logos);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(logos, this);
 
         // Attach the adapter to the recyclerview to populate items
-        recyclerViewFrame.setAdapter(adapter);
+        recyclerView_Frame.setAdapter(adapter);
 
         // Set layout manager to position the items
-        recyclerViewFrame.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView_Frame.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public void OnItemClick(int i) {
+        //Intent intent = new Intent(this, MapsActivity.class);
+        //logos.get(i);
+        //startActivity(intent);
     }
 }

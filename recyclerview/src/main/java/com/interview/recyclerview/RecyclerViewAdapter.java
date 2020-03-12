@@ -4,6 +4,10 @@ import com.interview.androidlib.DownloadImage;
 import com.interview.lib.Logo;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,26 +21,17 @@ import java.util.List;
 // Note that we specify the custom ViewHolder which gives us access to our views
 public class RecyclerViewAdapter extends
         RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-
-    /* need to do this everywhere we refer the database
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
-
-    public void deleteItem(){
-        StoreItem s (StoreItem)list.get(position);
-        String key = s.getKey();
-        myRef.child(key).removeValue();
-        list.remove(position);
-        notifyDataSetChanged();
+    private OnItemClickListener mListener;
+    public interface OnItemClickListener{
+        void OnItemClick(int i);
     }
-    *///end of database code
-
 
     // Provide a direct reference to each of the views within a data item_swipe
     // Used to cache the views within the item_swipe layout for fast access
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
+
         protected ImageView imageView_logo;
         protected TextView textView_FoodName;
         protected TextView textView_FoodSize;
@@ -45,12 +40,15 @@ public class RecyclerViewAdapter extends
         protected TextView textView_DrinkSize;
         protected TextView textView_DrinkMods;
 
+        OnItemClickListener listener;
+
         // We also create a constructor that accepts the entire item_swipe row
         // and does the view lookups to find each subview
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, OnItemClickListener listener) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
+            this.listener = listener;
 
             imageView_logo = (ImageView) itemView.findViewById(R.id.imageview_CompanyLogo);
             textView_FoodName = (TextView) itemView.findViewById(R.id.textView_FoodName);
@@ -59,6 +57,13 @@ public class RecyclerViewAdapter extends
             textView_DrinkName = (TextView) itemView.findViewById(R.id.textView_DrinkName);
             textView_DrinkSize = (TextView) itemView.findViewById(R.id.textView_DrinkSize);
             textView_DrinkMods = (TextView) itemView.findViewById(R.id.textView_FoodMods);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.OnItemClick(getAdapterPosition());
         }
     }
 
@@ -66,8 +71,9 @@ public class RecyclerViewAdapter extends
     private List<Logo> logos;
 
     // Pass in the contact array into the constructor
-    public RecyclerViewAdapter(List<Logo> logos) {
+    public RecyclerViewAdapter(List<Logo> logos, OnItemClickListener listener) {
         this.logos = logos;
+        mListener = listener;
     }
 
     // Usually involves inflating a layout from XML and returning the holder
@@ -77,10 +83,10 @@ public class RecyclerViewAdapter extends
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.list_content, parent, false);
+        View list_content = inflater.inflate(R.layout.list_content, parent, false);
 
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(contactView);
+        ViewHolder viewHolder = new ViewHolder(list_content, mListener);
         return viewHolder;
     }
 
@@ -94,10 +100,6 @@ public class RecyclerViewAdapter extends
         viewHolder.textView_FoodName.setText(logos.getName());
 
         new DownloadImage((ImageView) viewHolder.imageView_logo).execute("https://logo.clearbit.com/" + logos.getUrl());
-
-        //Button button = viewHolder.messageButton;f
-        //button.setText(contact.isOnline() ? "Visit" : "Closed");
-        //button.setEnabled(contact.isOnline());
     }
 
     // Returns the total count of items in the list

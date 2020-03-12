@@ -10,6 +10,7 @@ package com.interview.navigation;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
@@ -25,7 +26,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.interview.androidlib.DownloadImage;
 import com.interview.androidlib.GPS;
+
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
@@ -58,9 +62,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         fragment_Map = (View) findViewById(R.id.fragmentmap);
 
-
         //////////  Backend Variables Assigned  ////////////////////////////////////////
         this.gps = new GPS(this);
+
+        setMarkerIfBundled(getIntent());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -86,6 +91,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng gpsBoundaryCoord = new LatLng(10, -154);
         LatLngBounds unitedStates = new LatLngBounds(gpsBoundaryCoord, gpsCenterCoord);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(unitedStates.getCenter(), 14));
+    }
+
+    public void setMarkerIfBundled(Intent intent){
+
     }
 
     public LatLng latlng(Address address){
@@ -130,7 +139,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Address address = gps.getLastKnownAddress();
         String city = (address == null) ? "Current Location" : "Current Location in " + address.getLocality();
+        if (getIntent().getExtras() != null){
+            try {
+                Intent intent = getIntent();
+                double longitude = intent.getDoubleExtra("longitude", 0.0);
+                double latitude = intent.getDoubleExtra("latitude", 0.0);
+                String name = intent.getStringExtra("name");
+                String snippet = intent.getStringExtra("snippet");
+                String image_url = intent.getStringExtra("image_url");
+                Address addr = new Address(Locale.getDefault());
+                addr.setLongitude(longitude);
+                addr.setLatitude(latitude);
+                addMarker(addr, name, snippet);
 
+                textView_Title.setText(name);
+                float[] results = new float[20];
+                Location.distanceBetween(address.getLatitude(), address.getLongitude(), addr.getLatitude(), addr.getLongitude(), results);
+                textView_Radius.setText(String.format("%.2f", Float.toString(results[0])));
+                textView_Recommend.setText(snippet);
+                if (image_url != null)
+                    new DownloadImage(imageView_Logo).execute(image_url);
+
+            } catch (Exception e) {e.printStackTrace();}
+        }
         if (location != null) {
             addMarker(address, city);
             moveCamera(address);

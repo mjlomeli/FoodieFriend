@@ -4,6 +4,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'org.json:json:20190722'
+    implementation 'com.google.firebase:firebase-functions:19.0.2'
 }
 
 sourceCompatibility = "7"
