@@ -8,23 +8,16 @@ package com.interview.signin.ui.login;
  * authenticate. Special thanks to Google who has provided the code.
  */
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.interview.signin.data.LoginRepository;
-import com.interview.signin.data.Result;
 import com.interview.signin.R;
-
-import java.util.concurrent.Executor;
 
 public class LoginViewModel extends ViewModel {
 
