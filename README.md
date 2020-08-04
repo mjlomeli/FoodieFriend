@@ -14,7 +14,6 @@ Our users will interact with the system when they open the app, and a queue of r
 
 
 
-
 ## License
 
 Foodie-Friend is released under the [MIT license](LICENSE).
